@@ -21,6 +21,32 @@
   },
   {
     "ContainingType": "VideoGameApi.Controllers.VideoGameController",
+    "Method": "AddGame",
+    "RelativePath": "api/VideoGame",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "videoGame",
+        "Type": "VideoGameApi.Models.VideoGame",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "VideoGameApi.Models.VideoGame",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "VideoGameApi.Controllers.VideoGameController",
     "Method": "Get_VideoGame",
     "RelativePath": "api/VideoGame/{id}",
     "HttpMethod": "GET",
@@ -44,5 +70,52 @@
         "StatusCode": 200
       }
     ]
+  },
+  {
+    "ContainingType": "VideoGameApi.Controllers.VideoGameController",
+    "Method": "EditGame",
+    "RelativePath": "api/VideoGame/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "videoGame",
+        "Type": "VideoGameApi.Models.VideoGame",
+        "IsRequired": true
+      },
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "VideoGameApi.Models.VideoGame",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "VideoGameApi.Controllers.VideoGameController",
+    "Method": "DeleteGame",
+    "RelativePath": "api/VideoGame/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   }
 ]

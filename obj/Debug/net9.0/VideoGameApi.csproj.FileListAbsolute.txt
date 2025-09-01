@@ -32,3 +32,4 @@ C:\Users\mohamed elsayed\source\repos\c#_training\VideoGameApi\obj\Debug\net9.0\
 C:\Users\mohamed elsayed\source\repos\c#_training\VideoGameApi\obj\Debug\net9.0\VideoGameApi.genruntimeconfig.cache
 C:\Users\mohamed elsayed\source\repos\c#_training\VideoGameApi\obj\Debug\net9.0\ref\VideoGameApi.dll
 C:\Users\mohamed elsayed\source\repos\c#_training\VideoGameApi\bin\Debug\net9.0\Scalar.AspNetCore.dll
+C:\Users\mohamed elsayed\source\repos\c#_training\VideoGameApi\obj\Debug\net9.0\VideoGameApi.sourcelink.json

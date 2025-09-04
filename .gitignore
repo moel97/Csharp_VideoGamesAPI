@@ -1,0 +1,33 @@
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Bb]in/
+[Oo]bj/
+
+# Visual Studio files
+.vs/
+*.suo
+*.user
+*.userosscache
+
+# NuGet packages
+*.nupkg
+**/packages/*
+!**/packages/build/
+
+# Node.js
+node_modules/
+
+# Publish outputs
+*.[Pp]ublish.xml
+*.azurePubxml
+publish/
+
+# Sensitive data
+*.pfx
+*.publishsettings
+appsettings.*.json

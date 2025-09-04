@@ -1,4 +1,6 @@
+using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
+using VideoGameApi.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +9,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+builder.Services.AddDbContext<VideoGameDBContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnections") ?? throw new InvalidOperationException("Connection string 'VideoGameDBContext' not found.")));
 
 var app = builder.Build();
 

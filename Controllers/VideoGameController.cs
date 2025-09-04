@@ -1,70 +1,80 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
+using VideoGameApi.Data;
 using VideoGameApi.Models;
 
 namespace VideoGameApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class VideoGameController : ControllerBase
+    public class VideoGameController (VideoGameDBContext context)  : ControllerBase
     {
-        static private List<Models.VideoGame> videoGames = new List<Models.VideoGame>
-        {
-            new Models.VideoGame { id = 1, Title = "The Legend of Zelda: Breath of the Wild", Platform = "Nintendo Switch", Developer = "Nintendo", Publisher = "Nintendo" },
-            new Models.VideoGame { id = 2, Title = "God of War", Platform = "PlayStation 4", Developer = "Santa Monica Studio", Publisher = "Sony Interactive Entertainment" },
-            new Models.VideoGame { id = 3, Title = "Red Dead Redemption 2", Platform = "PlayStation 4, Xbox One, PC", Developer = "Rockstar Games", Publisher = "Rockstar Games" }
-        };
-
+        private readonly VideoGameDBContext _dbContext = context;
         [HttpGet]
 
-        public ActionResult<List<Models.VideoGame>> Get()
+        public async Task<ActionResult<List<Models.VideoGame>>> Get()
         {
+            var videoGames = await _dbContext.VideoGames.AsNoTracking().ToArrayAsync();
             return Ok(videoGames);
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Models.VideoGame> Get_VideoGame(int id)
+        public async Task<ActionResult<VideoGame>> Get_VideoGame(int id)
         {
-            var videoGame = videoGames.FirstOrDefault(game => game.id == id);
+            var videoGame = await _dbContext.VideoGames.AsNoTracking().FirstOrDefaultAsync(g => g.id == id);
             if (videoGame is null)
                 return NotFound();
             return Ok(videoGame);
         }
+
         [HttpPost]
-        public ActionResult<VideoGame> AddGame(Models.VideoGame videoGame) {
+        public async Task<ActionResult<VideoGame>> AddGame(VideoGame videoGame)
+        {
             if (videoGame == null)
                 return BadRequest();
-            var newId = videoGames.Max(game => game.id)+1;
-            videoGame.id = newId;
-            videoGames.Add(videoGame);
-            return CreatedAtAction(nameof(Get_VideoGame), new { id = newId} , videoGame);
+            var newVideoGame = new VideoGame
+            {
+                Title = videoGame.Title,
+                Platform = videoGame.Platform,
+                Developer = videoGame.Developer,
+                Publisher = videoGame.Publisher
+            };
+            _dbContext.VideoGames.Add(newVideoGame);
+            await _dbContext.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(Get_VideoGame), new { Id = videoGame.id }, videoGame);
         }
 
         [HttpPut("{id}")]
-        public ActionResult<VideoGame> EditGame(VideoGame videoGame, int id)
+        public async Task<ActionResult<VideoGame>> EditGame(VideoGame videoGame, int id)
         {
-            var OldVideoGame = videoGames.FirstOrDefault(game => game.id == id);
-            if (OldVideoGame is null)
+            var SelectedVideoGame = await _dbContext.VideoGames.FindAsync(id);
+            if (SelectedVideoGame is null)
                 return NotFound();
-            var props = OldVideoGame.GetType().GetProperties();
-            foreach(var prop in props)
-                {
-                if (prop.Name =="id")
-                    { continue; }
+            var props = SelectedVideoGame.GetType().GetProperties();
+            foreach (var prop in props)
+            {
+                if (prop.Name == "id")
+                { continue; }
                 var value = prop.GetValue(videoGame);
-                prop.SetValue(OldVideoGame, value);
-                }
-            videoGame.id = id; 
+                prop.SetValue(SelectedVideoGame, value);
+                Console.WriteLine(value);
+            }
+            videoGame.id = id;
+            await _dbContext.SaveChangesAsync();
             return NoContent();
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteGame (int id) 
+        public async Task<IActionResult> DeleteGame(int id)
         {
-            var videoGame = videoGames.FirstOrDefault(game => game.id == id);
+            var videoGame = await _dbContext.VideoGames.FindAsync(id);
             if (videoGame is null)
                 return NotFound();
-            videoGames.Remove(videoGame);
+            _dbContext.VideoGames.Remove(videoGame);
+            await _dbContext.SaveChangesAsync();
             return NoContent();
         }
 
